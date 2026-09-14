@@ -1,0 +1,268 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#6d28d9"><title>My Recipe Book V7</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f6f5f2;color:#202124;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:linear-gradient(145deg,#4c1d95,#7c3aed);color:white;padding:22px 16px}h1{margin:0;font-size:28px}.sub{opacity:.8;margin-top:5px}.wrap{max-width:760px;margin:auto;padding:14px}.search,input,textarea,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:14px;font:inherit;background:white}.countries{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.country,.tool,.back,.action{border:1px solid #ddd;background:white;border-radius:16px;padding:14px;font-weight:800}.country{text-align:left;font-size:17px}.country span{display:block;font-size:28px}.country small{display:block;color:#777;margin-top:4px}.tools{display:flex;gap:8px;overflow:auto;margin:12px 0}.card,.detail,.add{background:white;border-radius:18px;padding:16px;margin:11px 0;box-shadow:0 2px 10px #0001}.head{display:flex;justify-content:space-between}.title{font-size:19px;font-weight:850}.meta{font-size:12px;color:#6b7280;margin-top:5px}.tag{display:inline-block;background:#f0eaff;color:#5b21b6;border-radius:9px;padding:4px 7px;font-size:11px;margin:8px 4px 0 0}.actions{display:flex;gap:8px;margin-top:12px}.primary{background:#7c3aed;color:white;border:0;border-radius:12px;padding:10px 12px;font-weight:800}.ingredient{padding:8px 0;border-bottom:1px solid #eee}.steps li{margin:10px 0;line-height:1.45}.hidden{display:none}.section{font-weight:850;font-size:18px;margin:18px 0 8px}label{font-size:12px;font-weight:800}footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;text-align:center;padding:9px}@media(min-width:650px){.countries{grid-template-columns:repeat(4,1fr)}}button{font-family:inherit;cursor:pointer}
+
+.day{background:#f8f7ff;border-radius:14px;padding:12px;margin:9px 0}.day h3{margin:0 0 8px}.meal{display:flex;justify-content:space-between;gap:8px;align-items:center;background:white;border:1px solid #eee;border-radius:11px;padding:9px;margin-top:6px;font-size:13px}.meal button{border:0;background:#eee;border-radius:9px;padding:6px}.plannerActions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.shoprow{display:flex;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.shoprow input{width:20px;margin:0}.smallbtn{border:0;border-radius:10px;padding:8px 10px;font-weight:750;background:#eee}
+
+.nutritionMini{margin-top:10px;padding:9px;background:#f7f7fb;border-radius:11px;font-size:12px}
+.nutrition{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}
+.nutrition div{background:#f7f7fb;border-radius:12px;padding:9px 5px;text-align:center}
+.nutrition b{display:block;font-size:14px}.nutrition small{color:#777;font-size:10px}
+.daykcal{float:right;font-size:12px;color:#6b21a8}
+.slot{background:white;border-radius:11px;padding:9px;margin:7px 0;border:1px solid #eee}
+.slot>.smallbtn{margin-top:6px}
+.shopModes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.mode{border:1px solid #ddd;background:white;border-radius:12px;padding:10px;font-weight:800}
+.mode.active{background:#ede9fe;border-color:#8b5cf6}
+.advice{background:#f8f7ff;border-radius:12px;padding:11px;font-size:12px;line-height:1.4;margin:8px 0}
+
+.shopWinner{background:#ede9fe;border:1px solid #c4b5fd;border-radius:14px;padding:14px;margin:10px 0;text-align:center}
+.compareRow{display:flex;justify-content:space-between;align-items:center;padding:11px 8px;border-bottom:1px solid #eee}
+.compareRow small{display:block;color:#777;font-size:11px;margin-top:2px}
+.sourceNote{margin-top:12px;font-size:11px}
+
+.shoprow.done span{text-decoration:line-through;opacity:.55}
+.shoprow{display:flex;gap:10px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid #eee}
+.shoprow input{margin-top:3px}
+.storeSelect{display:block;width:100%;margin:9px 0;padding:11px;border:1px solid #ddd;border-radius:10px;background:white;font-size:16px}
+</style></head><body>
+<header><div class="wrap"><h1>🍽️ My Recipe Book V7</h1><div class="sub">🇱🇹 Lithuanian · 🇧🇾 Belarusian · 🇪🇸 Spanish · 🇬🇧 English</div></div></header>
+<main class="wrap"><div id="home"><input id="search" class="search" placeholder="🔎 Search recipes..." oninput="render()"><div class="section">Choose a country</div>
+<div class="countries"><button class="country" onclick="country('Lithuanian')"><span>🇱🇹</span>Lithuanian<small>Traditional favourites</small></button><button class="country" onclick="country('Belarusian')"><span>🇧🇾</span>Belarusian<small>Traditional favourites</small></button><button class="country" onclick="country('Spanish')"><span>🇪🇸</span>Spanish<small>Classic dishes</small></button><button class="country" onclick="country('English')"><span>🇬🇧</span>English<small>British classics</small></button></div>
+<div class="tools">
+<button class="tool" onclick="country('All')">All recipes</button>
+<button class="tool" onclick="favs()">⭐ Favourites</button>
+<button class="tool" onclick="showPlanner()">📅 Meal planner</button>
+<button class="tool" onclick="showShopping()">🛒 Shopping list</button>
+<button class="tool" onclick="add()">➕ Add recipe</button>
+</div><div id="cards"></div></div>
+<div id="detail" class="detail hidden"></div>
+<div id="planner" class="detail hidden"></div>
+<div id="shopping" class="detail hidden"></div>
+<div id="add" class="add hidden"><button class="back" onclick="home()">← Back</button><div class="section">➕ Add my recipe</div><label>Name</label><input id="n" placeholder="Family recipe"><label>Country</label><select id="c"><option>Lithuanian</option><option>Belarusian</option><option>Spanish</option><option>English</option></select><label>Ingredients — one per line</label><textarea id="i" placeholder="500 g potatoes&#10;1 onion"></textarea><label>Method — one step per line</label><textarea id="s" placeholder="Prepare the ingredients.&#10;Cook and serve."></textarea><button class="primary" onclick="save()">Save recipe</button></div></main><footer><button onclick="home()">🏠 Home</button></footer>
+<script>
+const R=[
+["Cepelinai","Lithuanian","🇱🇹","90 min",["potato","traditional"],["1 kg potatoes","300 g minced meat","1 onion","Salt and pepper"],["Grate and squeeze the potatoes.","Prepare the meat filling.","Shape the potato dough around the filling.","Boil gently until cooked and serve."]],
+["Kugelis","Lithuanian","🇱🇹","90 min",["potato","oven"],["1 kg potatoes","200 g bacon","1 onion","2 eggs","150 ml milk"],["Grate the potatoes.","Fry bacon and onion.","Mix everything together.","Bake until golden and set."]],
+["Šaltibarščiai","Lithuanian","🇱🇹","20 min",["cold","summer"],["500 g beetroot","500 ml kefir","1 cucumber","2 eggs","Dill"],["Chop the vegetables.","Mix with kefir.","Add eggs and dill.","Chill before serving."]],
+["Draniki","Belarusian","🇧🇾","35 min",["potato","pan"],["700 g potatoes","1 onion","1 egg","2 tbsp flour","Salt"],["Grate potatoes and onion.","Mix with egg, flour and salt.","Fry until crisp and cooked."]],
+["Machanka","Belarusian","🇧🇾","75 min",["pork","traditional"],["500 g pork","1 onion","250 ml stock","1 tbsp flour"],["Brown the pork.","Cook onion.","Add stock and simmer.","Thicken lightly and serve."]],
+["Tortilla Española","Spanish","🇪🇸","40 min",["eggs","potato"],["500 g potatoes","1 onion","6 eggs","Olive oil","Salt"],["Slice potatoes and onion.","Cook slowly in olive oil.","Mix with beaten eggs.","Cook until set."]],
+["Paella","Spanish","🇪🇸","55 min",["rice","classic"],["300 g paella rice","Chicken or seafood","1 pepper","Stock","Saffron or paprika"],["Cook the base ingredients.","Add rice and seasoning.","Add hot stock and cook.","Rest briefly before serving."]],
+["Sunday Roast","English","🇬🇧","2 hr",["roast","family"],["Roasting joint","Potatoes","Carrots","Parsnips","Gravy"],["Roast the meat.","Roast potatoes until crisp.","Cook vegetables.","Rest meat and serve with gravy."]],
+["Cottage Pie","English","🇬🇧","75 min",["beef","comfort food"],["500 g beef mince","1 onion","Carrots","Peas","Mashed potatoes"],["Brown mince and vegetables.","Add gravy or stock.","Top with mashed potatoes.","Bake until golden."]],
+["Fish & Chips","English","🇬🇧","60 min",["fish","classic"],["White fish","Potatoes","Flour","Batter","Oil"],["Prepare chips.","Coat fish in batter.","Cook until crisp and cooked through.","Serve immediately."]]
+].map(x=>({name:x[0],country:x[1],flag:x[2],time:x[3],tags:x[4],ingredients:x[5],steps:x[6]}));
+const NUTRITION={
+"Cepelinai":{portion:"2 cepelinai (~400g)",kcal:620,protein:30,carbs:70,fat:24},
+"Kugelis":{portion:"~350g",kcal:520,protein:18,carbs:58,fat:24},
+"Šaltibarščiai":{portion:"~450g",kcal:230,protein:12,carbs:24,fat:9},
+"Draniki":{portion:"4 pancakes (~300g)",kcal:430,protein:10,carbs:55,fat:18},
+"Machanka":{portion:"~350g",kcal:560,protein:32,carbs:18,fat:38},
+"Tortilla Española":{portion:"~300g",kcal:470,protein:20,carbs:38,fat:26},
+"Paella":{portion:"~400g",kcal:540,protein:30,carbs:62,fat:18},
+"Sunday Roast":{portion:"1 plate (~500g)",kcal:650,protein:42,carbs:58,fat:26},
+"Cottage Pie":{portion:"~400g",kcal:560,protein:32,carbs:48,fat:25},
+"Fish & Chips":{portion:"1 serving (~400g)",kcal:760,protein:32,carbs:72,fat:38}
+};
+function nutritionFor(r){return NUTRITION[r.name]||{portion:"1 serving",kcal:0,protein:0,carbs:0,fat:0};}
+
+const SUPERMARKETS=["Aldi","ASDA","Co-op","Iceland","Morrisons","Ocado","Sainsbury's","Tesco","Waitrose"];
+const DEMO_PRICES={
+ "milk":{"Aldi":1.65,"ASDA":1.65,"Co-op":1.85,"Iceland":1.80,"Morrisons":1.75,"Ocado":1.90,"Sainsbury's":1.80,"Tesco":1.75,"Waitrose":1.75},
+ "eggs":{"Aldi":2.19,"ASDA":2.25,"Co-op":2.60,"Iceland":2.50,"Morrisons":2.35,"Ocado":2.60,"Sainsbury's":2.40,"Tesco":2.35,"Waitrose":2.50},
+ "oats":{"Aldi":0.95,"ASDA":1.10,"Co-op":1.35,"Iceland":1.20,"Morrisons":1.00,"Ocado":1.25,"Sainsbury's":1.10,"Tesco":1.10,"Waitrose":1.00},
+ "chicken":{"Aldi":6.49,"ASDA":6.50,"Co-op":7.00,"Iceland":6.75,"Morrisons":6.75,"Ocado":7.20,"Sainsbury's":7.00,"Tesco":6.75,"Waitrose":7.50},
+ "potatoes":{"Aldi":1.35,"ASDA":1.50,"Co-op":1.70,"Iceland":1.50,"Morrisons":1.45,"Ocado":1.65,"Sainsbury's":1.50,"Tesco":1.45,"Waitrose":1.65},
+ "onion":{"Aldi":0.95,"ASDA":1.00,"Co-op":1.20,"Iceland":1.10,"Morrisons":1.00,"Ocado":1.15,"Sainsbury's":1.00,"Tesco":0.95,"Waitrose":1.10},
+ "rice":{"Aldi":1.49,"ASDA":1.55,"Co-op":1.75,"Iceland":1.60,"Morrisons":1.55,"Ocado":1.70,"Sainsbury's":1.60,"Tesco":1.55,"Waitrose":1.75},
+ "cheese":{"Aldi":3.25,"ASDA":3.30,"Co-op":3.75,"Iceland":3.50,"Morrisons":3.40,"Ocado":3.65,"Sainsbury's":3.50,"Tesco":3.40,"Waitrose":3.95},
+ "beef":{"Aldi":5.99,"ASDA":6.25,"Co-op":6.75,"Iceland":6.50,"Morrisons":6.25,"Ocado":7.00,"Sainsbury's":6.50,"Tesco":6.25,"Waitrose":7.25},
+ "fish":{"Aldi":4.99,"ASDA":5.25,"Co-op":5.75,"Iceland":5.50,"Morrisons":5.25,"Ocado":5.80,"Sainsbury's":5.50,"Tesco":5.25,"Waitrose":6.00},
+ "bread":{"Aldi":1.10,"ASDA":1.20,"Co-op":1.40,"Iceland":1.30,"Morrisons":1.15,"Ocado":1.35,"Sainsbury's":1.25,"Tesco":1.20,"Waitrose":1.40},
+ "tomatoes":{"Aldi":1.00,"ASDA":1.05,"Co-op":1.25,"Iceland":1.10,"Morrisons":1.00,"Ocado":1.20,"Sainsbury's":1.05,"Tesco":1.00,"Waitrose":1.25}
+};
+function ingredientKey(s){
+ s=s.toLowerCase();
+ if(/milk/.test(s))return"milk"; if(/egg/.test(s))return"eggs"; if(/oat/.test(s))return"oats";
+ if(/chicken/.test(s))return"chicken"; if(/potato/.test(s))return"potatoes"; if(/onion/.test(s))return"onion";
+ if(/rice/.test(s))return"rice"; if(/cheese|curd/.test(s))return"cheese"; if(/beef|mince/.test(s))return"beef";
+ if(/fish|cod|hake|salmon/.test(s))return"fish"; if(/bread/.test(s))return"bread"; if(/tomato/.test(s))return"tomatoes";
+ return null;
+}
+function priceRows(){
+ const items=[];
+ Object.values(plan).forEach(day=>Object.values(day||{}).forEach(name=>{
+  const r=all().find(x=>x.name===name);
+  if(r)r.ingredients.forEach(i=>{const k=ingredientKey(i);if(k&&!items.some(x=>x.key===k))items.push({key:k,name:i})});
+ }));
+ return items;
+}
+function compareBasket(){
+ const items=priceRows();
+ return SUPERMARKETS.map(store=>({store,total:items.reduce((s,i)=>s+(DEMO_PRICES[i.key]?.[store]||0),0),items})).sort((a,b)=>a.total-b.total);
+}
+function bestPerItem(){
+ return priceRows().map(i=>{
+  const vals=SUPERMARKETS.map(s=>({store:s,price:DEMO_PRICES[i.key]?.[s]})).filter(x=>x.price!=null).sort((a,b)=>a.price-b.price);
+  return {...i,best:vals[0],all:vals};
+ });
+}
+
+function aisleGroup(key){
+ const map={milk:"Dairy & Eggs",eggs:"Dairy & Eggs",cheese:"Dairy & Eggs",oats:"Breakfast & Cereals",
+ chicken:"Meat & Fish",beef:"Meat & Fish",fish:"Meat & Fish",potatoes:"Fruit & Veg",onion:"Fruit & Veg",
+ tomatoes:"Fruit & Veg",rice:"Food Cupboard",bread:"Bakery"};
+ return map[key]||"Other";
+}
+function plannedRoute(){
+ const items=bestPerItem();
+ const groups={};
+ items.forEach(x=>{const g=aisleGroup(x.key);(groups[g]??=[]).push(x)});
+ const order=["Fruit & Veg","Bakery","Meat & Fish","Dairy & Eggs","Breakfast & Cereals","Food Cupboard","Other"];
+ return order.filter(g=>groups[g]).map(g=>({group:g,items:groups[g]}));
+}
+function showShopRoute(){
+ hidePanels();const s=document.getElementById("shopping");s.classList.remove("hidden");
+ const route=plannedRoute().slice().sort((a,b)=>(storeAisle(a.group)||99)-(storeAisle(b.group)||99));
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button>
+ <div class="section">🗺️ Plan My Shopping Route</div>
+ <div class="card"><b>Which supermarket are you using?</b>
+ <select class="storeSelect" onchange="setStore(this.value)">${SUPERMARKETS.map(x=>`<option ${x===selectedStore?"selected":""}>${x}</option>`).join("")}</select>
+ <small class="meta">Aisles are a starting guide; exact numbers can vary by branch.</small></div>
+ <div class="card"><b>🎯 One-pass route</b><br>All ingredients from your weekly meals are combined and ordered by aisle, so you don't return to the same aisle.</div>
+ ${route.length?route.map((g,i)=>`<div class="day"><h3>${i+1}. Aisle ${storeAisle(g.group)??"—"} · ${g.group}</h3>
+ ${g.items.map(x=>`<label class="shoprow"><input type="checkbox" onchange="this.parentElement.classList.toggle('done')"><span><b>${x.name}</b><br><small>Best price: ${x.best.store} · £${x.best.price.toFixed(2)}</small></span></label>`).join("")}</div>`).join(""):'<div class="card">Add meals to your planner first.</div>'}
+ <div class="plannerActions"><button class="primary" onclick="shoppingCompare()">💰 Compare prices</button><button class="smallbtn" onclick="showShopping()">← Shopping list</button></div>`;
+ window.scrollTo(0,0);
+}
+function shoppingCompare(){
+ hidePanels();const s=document.getElementById("shopping");s.classList.remove("hidden");
+ const rows=compareBasket(),best=rows[0],split=bestPerItem(),splitTotal=split.reduce((a,x)=>a+x.best.price,0);
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button>
+ <div class="section">🛒 Smart Shopping Comparison</div>
+ <div class="meta">Demo price engine across ${SUPERMARKETS.length} supermarkets. Live prices need a connected price-data source.</div>
+ ${!priceRows().length?`<div class="card">Add meals to your weekly planner first.</div>`:`
+ <div class="shopWinner">🏆 Cheapest complete shop<br><b>${best.store} — £${best.total.toFixed(2)}</b></div>
+ <div class="card"><b>🧩 Cheapest split shop — £${splitTotal.toFixed(2)}</b><br><small>Buys each matched item from its cheapest supermarket. This may require several trips.</small></div>
+ <div class="section">Supermarket totals</div>
+ ${rows.map((x,i)=>`<div class="compareRow"><span>${i===0?"🏆 ":""}${x.store}</span><b>£${x.total.toFixed(2)}</b></div>`).join("")}
+ <div class="section">Cheapest place for each item</div>
+ ${split.map(x=>`<div class="compareRow"><span>${x.name}<small>${x.best.store}</small></span><b>£${x.best.price.toFixed(2)}</b></div>`).join("")}
+ <div class="meta sourceNote">Prices shown here are illustrative demo values for the app interface, not live quotes. The app should only label prices as “live” after a real data feed confirms them.</div>`}`;
+ window.scrollTo(0,0);
+}
+
+
+const STORE_LAYOUTS={
+"Tesco":{"Fruit & Veg":1,"Bakery":3,"Meat & Fish":5,"Dairy & Eggs":8,"Breakfast & Cereals":10,"Food Cupboard":12,"Other":15},
+"ASDA":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":7,"Breakfast & Cereals":9,"Food Cupboard":11,"Other":14},
+"Morrisons":{"Fruit & Veg":1,"Bakery":3,"Meat & Fish":5,"Dairy & Eggs":8,"Breakfast & Cereals":11,"Food Cupboard":13,"Other":16},
+"Sainsbury's":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":5,"Dairy & Eggs":7,"Breakfast & Cereals":10,"Food Cupboard":12,"Other":15},
+"Waitrose":{"Fruit & Veg":1,"Bakery":3,"Meat & Fish":6,"Dairy & Eggs":8,"Breakfast & Cereals":11,"Food Cupboard":13,"Other":16},
+"Aldi":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":6,"Breakfast & Cereals":8,"Food Cupboard":10,"Other":13},
+"Lidl":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":6,"Breakfast & Cereals":8,"Food Cupboard":10,"Other":13},
+"Co-op":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":6,"Breakfast & Cereals":8,"Food Cupboard":10,"Other":12},
+"Iceland":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":6,"Breakfast & Cereals":8,"Food Cupboard":10,"Other":12},
+"Ocado":{"Fruit & Veg":1,"Bakery":2,"Meat & Fish":4,"Dairy & Eggs":6,"Breakfast & Cereals":8,"Food Cupboard":10,"Other":12}
+};
+let selectedStore=localStorage.getItem("rb_store")||"Tesco";
+function setStore(v){selectedStore=v;localStorage.setItem("rb_store",v);showShopRoute()}
+function storeAisle(group){return STORE_LAYOUTS[selectedStore]?.[group]??null}
+
+const MEAL_TYPES=["Breakfast","Lunch","Dinner"];
+function mealTypeFor(r){
+ if(r.tags.includes("eggs")||r.name==="Draniki") return "Breakfast";
+ if(["Šaltibarščiai","Tortilla Española","Cottage Pie","Fish & Chips"].includes(r.name)) return "Lunch";
+ return "Dinner";
+}
+
+let custom=JSON.parse(localStorage.getItem("rb_custom")||"[]"),saved=JSON.parse(localStorage.getItem("rb_saved")||"[]"),filter="All";
+function all(){return R.concat(custom)} function country(c){filter=c;document.getElementById("home").classList.remove("hidden");document.getElementById("add").classList.add("hidden");document.getElementById("detail").classList.add("hidden");render()}
+function render(){let q=document.getElementById("search").value.toLowerCase();let a=all().filter(x=>filter=="All"||x.country==filter).filter(x=>(x.name+" "+x.country+" "+x.tags.join(" ")).toLowerCase().includes(q));document.getElementById("cards").innerHTML=a.length?a.map(card).join(""):"<div class='card'>No recipes found.</div>"}
+function card(x){
+ let k=x.country+"|"+x.name,yes=saved.includes(k),n=nutritionFor(x);
+ return `<div class="card"><div class="head"><div><div class="title">${x.name}</div><div class="meta">${x.flag} ${x.country} · ⏱ ${x.time} · ${mealTypeFor(x)}</div></div><div>${yes?"⭐":"☆"}</div></div>
+ <div>${x.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+ <div class="nutritionMini">🔥 ${n.kcal} kcal · 💪 ${n.protein}g protein · 🍞 ${n.carbs}g carbs · 🥑 ${n.fat}g fat</div>
+ <div class="actions"><button class="primary" onclick='openR(${JSON.stringify(x)})'>View recipe</button><button class="action" onclick='fav(${JSON.stringify(k)})'>${yes?"★ Saved":"☆ Favourite"}</button></div></div>`
+}
+function openR(x){
+ let d=document.getElementById("detail"),n=nutritionFor(x);
+ document.getElementById("home").classList.add("hidden");d.classList.remove("hidden");
+ d.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="meta">${x.flag} ${x.country} · ⏱ ${x.time} · ${mealTypeFor(x)}</div><h2>${x.name}</h2>
+ <div class="nutrition"><div><b>🔥 ${n.kcal}</b><small>kcal</small></div><div><b>💪 ${n.protein}g</b><small>protein</small></div><div><b>🍞 ${n.carbs}g</b><small>carbs</small></div><div><b>🥑 ${n.fat}g</b><small>fat</small></div></div>
+ <div class="meta">Estimated nutrition per ${n.portion}. Actual values vary with ingredients and brands.</div>
+ <div class="section">Ingredients</div>${x.ingredients.map(v=>`<div class="ingredient">• ${v}</div>`).join("")}
+ <div class="section">Method</div><ol class="steps">${x.steps.map(v=>`<li>${v}</li>`).join("")}</ol>`;
+ scrollTo(0,0)
+}
+function fav(k){saved=saved.includes(k)?saved.filter(v=>v!=k):saved.concat(k);localStorage.setItem("rb_saved",JSON.stringify(saved));render()}
+function favs(){filter="All";document.getElementById("home").classList.remove("hidden");document.getElementById("detail").classList.add("hidden");document.getElementById("add").classList.add("hidden");let a=all().filter(x=>saved.includes(x.country+"|"+x.name));document.getElementById("cards").innerHTML=a.length?a.map(card).join(""):"<div class='card'>No favourites yet.</div>"}
+function add(){document.getElementById("home").classList.add("hidden");document.getElementById("detail").classList.add("hidden");document.getElementById("add").classList.remove("hidden")}
+function save(){let name=n.value.trim();if(!name)return alert("Enter a recipe name.");let countryName=c.value,flag={Lithuanian:"🇱🇹",Belarusian:"🇧🇾",Spanish:"🇪🇸",English:"🇬🇧"}[countryName];custom.push({name,country:countryName,flag,time:"My recipe",tags:["my recipe"],ingredients:i.value.split("\n").filter(Boolean),steps:s.value.split("\n").filter(Boolean)});localStorage.setItem("rb_custom",JSON.stringify(custom));home();country(countryName)}
+function home(){document.getElementById("home").classList.remove("hidden");document.getElementById("detail").classList.add("hidden");document.getElementById("add").classList.add("hidden");document.getElementById("planner").classList.add("hidden");document.getElementById("shopping").classList.add("hidden");render();scrollTo(0,0)}
+
+let plan=JSON.parse(localStorage.getItem("rb_plan")||"{}");
+let shopping=JSON.parse(localStorage.getItem("rb_shopping")||"[]");
+const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+try{if(plan&&Object.values(plan).some(v=>Array.isArray(v))){let m={};Object.entries(plan).forEach(([d,arr])=>{m[d]={};(arr||[]).forEach(name=>{let r=all().find(x=>x.name===name);if(r)m[d][mealTypeFor(r)]=name})});plan=m;localStorage.setItem("rb_plan",JSON.stringify(plan))}}catch(e){}
+
+
+function hidePanels(){
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("detail").classList.add("hidden");
+ document.getElementById("add").classList.add("hidden");
+ document.getElementById("planner").classList.add("hidden");
+ document.getElementById("shopping").classList.add("hidden");
+}
+function showPlanner(){
+ hidePanels();const p=document.getElementById("planner");p.classList.remove("hidden");
+ p.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="section">📅 Weekly Meal Planner</div>
+ <div class="meta">Choose recipes directly from your book. Daily calories are calculated automatically.</div>
+ <div class="plannerActions"><button class="smallbtn" onclick="clearPlan()">Clear week</button><button class="primary" onclick="makeShopping()">🛒 Make shopping list</button></div>
+ ${days.map(day=>{const meals=plan[day]||{};const total=Object.values(meals).reduce((s,name)=>{let r=all().find(x=>x.name===name);return s+(r?nutritionFor(r).kcal:0)},0);
+ return `<div class="day"><h3>${day} <span class="daykcal">${total?total+" kcal":"—"}</span></h3>
+ ${MEAL_TYPES.map(type=>`<div class="slot"><b>${type}</b>${meals[type]?`<div class="meal"><span>🍽️ ${meals[type]}</span><button onclick='removeMeal(${JSON.stringify(day)},${JSON.stringify(type)})'>✕</button></div>`:`<div class="meta">No ${type.toLowerCase()} planned</div>`}
+ <button class="smallbtn" onclick='pickMeal(${JSON.stringify(day)},${JSON.stringify(type)})'>＋ Add ${type.toLowerCase()}</button></div>`).join("")}</div>`}).join("")}`;
+ window.scrollTo(0,0);
+}
+function pickMeal(day,type){
+ const planner=document.getElementById("planner");
+ planner.innerHTML=`<button class="back" onclick="showPlanner()">← Back to planner</button><div class="section">🍽️ Choose ${type.toLowerCase()} for ${day}</div>
+ <div class="meta">Select a recipe directly from your recipe book.</div>
+ ${all().map((r,i)=>{let n=nutritionFor(r);return `<div class="meal" style="margin:8px 0;cursor:pointer" onclick="addMeal(${i},${JSON.stringify(day)},${JSON.stringify(type)})"><span>${r.flag} <b>${r.name}</b><br><small style="color:#777">${r.country} · ${n.kcal} kcal</small></span><span>＋</span></div>`}).join("")}`;
+ window.scrollTo(0,0);
+}
+function addMeal(i,day,type){const r=all()[i];if(!r)return;plan[day]=plan[day]||{};plan[day][type]=r.name;localStorage.setItem("rb_plan",JSON.stringify(plan));showPlanner()}
+function removeMeal(day,type){if(plan[day]){delete plan[day][type];if(!Object.keys(plan[day]).length)delete plan[day]}localStorage.setItem("rb_plan",JSON.stringify(plan));showPlanner()}
+function clearPlan(){if(confirm("Clear the whole week's meal plan?")){plan={};localStorage.setItem("rb_plan",JSON.stringify(plan));showPlanner()}}
+
+function makeShopping(){
+ shopping=[];
+ Object.values(plan).forEach(dayMeals=>Object.values(dayMeals||{}).forEach(name=>{
+  const r=all().find(x=>x.name===name);if(r)r.ingredients.forEach(ing=>{
+   if(!shopping.some(x=>x.text.toLowerCase()===ing.toLowerCase()))shopping.push({text:ing,done:false})
+  });
+ }));
+ localStorage.setItem("rb_shopping",JSON.stringify(shopping));showShopping();
+}
+function showShopping(){
+ hidePanels();const s=document.getElementById("shopping");s.classList.remove("hidden");
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="section">🛒 Weekly Shopping List</div>
+ <div class="meta">Choose how you want the app to help you shop.</div>
+ <div class="shopModes"><button class="mode active" onclick="setShopMode('normal',this)">🛒 Normal</button><button class="mode" onclick="setShopMode('healthy',this)">🥗 Healthier</button><button class="mode" onclick="setShopMode('protein',this)">💪 High protein</button><button class="mode" onclick="setShopMode('budget',this)">💷 Healthy + budget</button></div>
+ <div id="shopAdvice" class="advice">Normal shopping keeps the list simple. Brand recommendations will only be shown when reliable current product nutrition data is available.</div>
+ <div class="plannerActions"><button class="smallbtn" onclick="makeShopping()">↻ Rebuild from plan</button><button class="primary" onclick="shoppingCompare()">💰 Compare supermarkets</button><button class="primary" onclick="showShopRoute()">🗺️ Plan my route</button><button class="smallbtn" onclick="clearShopping()">Clear list</button></div>
+ ${shopping.length?shopping.map((x,i)=>`<label class="shoprow"><input type="checkbox" ${x.done?"checked":""} onchange="toggleShop(${i})"><span>${x.text}</span></label>`).join(""):'<div class="card">Your list is empty. Add meals to the planner, then tap <b>Make shopping list</b>.</div>'}`;
+ window.scrollTo(0,0);
+}
+function setShopMode(mode,el){
+ document.querySelectorAll(".mode").forEach(b=>b.classList.remove("active"));if(el)el.classList.add("active");
+ const t={normal:"Normal shopping keeps the list simple.",healthy:"🥗 Healthier mode favours lower sugar, lower saturated fat and salt, and more fibre when comparing similar products.",protein:"💪 High-protein mode prioritises protein while still checking calories and saturated fat.",budget:"💷 Healthy + budget looks for the better-nutrition option without paying a large premium."}[mode];
+ document.getElementById("shopAdvice").textContent=t+" Brand recommendations will only be shown when reliable current product nutrition data is available.";
+}
+function toggleShop(i){shopping[i].done=!shopping[i].done;localStorage.setItem("rb_shopping",JSON.stringify(shopping));showShopping()}
+function clearShopping(){shopping=[];localStorage.setItem("rb_shopping","[]");showShopping()}
+
+render();
+</script></body></html>

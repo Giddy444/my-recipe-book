@@ -1,6 +1,6 @@
-# My Recipe Book V9
+# My Recipe Book V10
 
-V9 focuses on a more professional recipe-detail experience.
+V10 focuses on a more professional recipe-detail experience.
 
 ## Recipe page
 - Large recipe photo area

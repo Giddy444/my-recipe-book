@@ -1,26 +1,15 @@
-# My Recipe Book V11
+# My Recipe Book V12
 
-V11 focuses on a more professional recipe-detail experience.
+- 40 recipes across Lithuanian, Belarusian, Spanish and English cuisines
+- Photo on recipe cards before opening
+- Large recipe photo on recipe detail
+- Cook Mode
+- Add to Weekly Plan
+- Nutrition estimates
+- Shopping list and route tools
+- Heritage recipes
 
-## Recipe page
-- Large recipe photo area
-- Photo search from Wikimedia Commons with source attribution
-- Country, cooking time and meal type
-- Short recipe introduction
-- Nutrition per portion
-- 👨‍🍳 Cook Mode
-- 📅 Add to weekly plan
-- Ingredients
-- Method
+## Photo loading
+Recipe photos are fetched from Wikimedia Commons. Card photos use an IntersectionObserver-safe loading method and Wikimedia thumbnail URLs where available.
 
-## Collections
-- 🇱🇹 Lithuanian — 10 recipes
-- 🇧🇾 Belarusian — 10 recipes
-- 🇪🇸 Spanish — 10 recipes
-- 🇬🇧 English — 10 recipes
-- 🏺 Heritage recipes
-
-## Important
-Recipe photos are requested dynamically from Wikimedia Commons when a recipe is opened. If no suitable image is found or the connection is unavailable, the recipe remains fully usable and shows a photo placeholder.
-
-Nutrition values are estimates. Supermarket prices and aisle guides are demonstration data, not live quotations.
+Supermarket prices and aisle guides are demo data; nutrition is estimated.
